@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Registration</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body { font-family: Arial; margin: 0; padding: 0; background: #f4f6f8; }
+
+        header {
+            background-color:rgb(34, 157, 214);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            margin-left: 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .form-container {
+            max-width: 500px;
+            background: white;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        input[type="text"], input[type="email"], select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: rgb(5, 160, 180);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: rgb(0, 100, 30);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+  <h1>Admission Portal</h1>
+  <nav>
+    <a href="register.html">Register</a>
+    <a href="adminlogin.html">Login</a>
+  </nav>
+</header>
+
+<div class="form-container">
+    <h2>Student Registration Form</h2>
+    <form id="registrationForm">
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="text" name="cnic" placeholder="CNIC" required>
+        <input type="email" name="email" placeholder="Email" required>
+
+        <label>Program</label>
+        <select name="program" required>
+            <option value="">-- Select Program --</option>
+            <option value="BS Computer Science">BS Computer Science</option>
+            <option value="BS Data Science">BS Data Science</option>
+            <option value="BS Software Engineering">BS Software Engineering</option>
+            <option value="BS Information Technology">BS Information Technology</option>
+            <option value="MS Computer Science">MS Computer Science</option>
+            <option value="MS Artificial Intelligence">MS Artificial Intelligence</option>
+            <option value="PhD Computer Science">PhD Computer Science</option>
+        </select>
+
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+<script>
+document.getElementById("registrationForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch("register.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.text())
+    .then(response => {
+        if (response.includes("success")) {
+            Swal.fire({
+                title: "Registration Successful!",
+                icon: "success",
+                confirmButtonText: "OK"
+            });
+            this.reset();
+        } else {
+            Swal.fire({
+                title: "Error!",
+                text: response,
+                icon: "error"
+            });
+        }
+    })
+    .catch(() => {
+        Swal.fire("Error!", "Unable to connect to server.", "error");
+    });
+});
+</script>
+
+</body>
+</html>
